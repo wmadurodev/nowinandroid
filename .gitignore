@@ -47,3 +47,14 @@ captures/
 
 # Kotlin
 .kotlin
+/app/.idea/caches/deviceStreaming.xml
+/app/.idea/.gitignore
+/app/.idea/AndroidProjectSystem.xml
+/app/.idea/gradle.xml
+/app/.idea/markdown.xml
+/app/.idea/migrations.xml
+/app/.idea/misc.xml
+/app/.idea/runConfigurations.xml
+/app/.idea/vcs.xml
+/docs/AppFunctionalityAndArchitecture.md
+/docs/NiaCatalogFunctionalityAndArchitecture.md
