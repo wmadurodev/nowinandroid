@@ -26,7 +26,7 @@ android {
 }
 
 dependencies {
-    lintPublish(projects.lint)
+//    lintPublish(projects.lint)
 
     api(libs.androidx.compose.foundation)
     api(libs.androidx.compose.foundation.layout)
@@ -41,8 +41,8 @@ dependencies {
 
     testImplementation(libs.androidx.compose.ui.test)
     testImplementation(libs.androidx.compose.ui.testManifest)
-    
+
     testImplementation(libs.hilt.android.testing)
     testImplementation(libs.robolectric)
-    testImplementation(projects.core.screenshotTesting)
+//    testImplementation(projects.core.screenshotTesting)
 }

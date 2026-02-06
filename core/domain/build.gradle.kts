@@ -29,5 +29,5 @@ dependencies {
 
     implementation(libs.javax.inject)
 
-    testImplementation(projects.core.testing)
+//    testImplementation(projects.core.testing)
 }

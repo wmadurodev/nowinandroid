@@ -21,7 +21,8 @@ plugins {
 
 android {
     defaultConfig {
-        testInstrumentationRunner = "com.google.samples.apps.nowinandroid.core.testing.NiaTestRunner"
+        testInstrumentationRunner =
+            "com.google.samples.apps.nowinandroid.core.testing.NiaTestRunner"
     }
     namespace = "com.google.samples.apps.nowinandroid.sync"
 }
@@ -42,5 +43,5 @@ dependencies {
     androidTestImplementation(libs.androidx.work.testing)
     androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.kotlinx.coroutines.guava)
-    androidTestImplementation(projects.core.testing)
+//    androidTestImplementation(projects.core.testing)
 }

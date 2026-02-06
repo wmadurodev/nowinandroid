@@ -35,7 +35,8 @@ android {
         versionName = "0.1.2" // X.Y.Z; X = Major, Y = minor, Z = Patch level
 
         // Custom test runner to set up Hilt dependency graph
-        testInstrumentationRunner = "com.google.samples.apps.nowinandroid.core.testing.NiaTestRunner"
+        testInstrumentationRunner =
+            "com.google.samples.apps.nowinandroid.core.testing.NiaTestRunner"
     }
 
     buildTypes {
@@ -46,8 +47,10 @@ android {
             isMinifyEnabled = providers.gradleProperty("minifyWithR8")
                 .map(String::toBooleanStrict).getOrElse(true)
             applicationIdSuffix = NiaBuildType.RELEASE.applicationIdSuffix
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
-                          "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
 
             // To publish on the Play store a private signing key is required, but to allow anyone
             // who clones the code to sign and run the release variant, use the debug signing key.
@@ -111,31 +114,31 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     debugImplementation(libs.androidx.compose.ui.testManifest)
-    debugImplementation(projects.uiTestHiltManifest)
+//    debugImplementation(projects.uiTestHiltManifest)
 
     kspTest(libs.hilt.compiler)
 
-    testImplementation(projects.core.dataTest)
-    testImplementation(projects.core.datastoreTest)
-    testImplementation(libs.hilt.android.testing)
-    testImplementation(projects.sync.syncTest)
-    testImplementation(libs.kotlin.test)
+//    testImplementation(projects.core.dataTest)
+//    testImplementation(projects.core.datastoreTest)
+//    testImplementation(libs.hilt.android.testing)
+//    testImplementation(projects.sync.syncTest)
+//    testImplementation(libs.kotlin.test)
 
     testDemoImplementation(libs.androidx.navigation.testing)
     testDemoImplementation(libs.robolectric)
     testDemoImplementation(libs.roborazzi)
-    testDemoImplementation(projects.core.screenshotTesting)
-    testDemoImplementation(projects.core.testing)
+//    testDemoImplementation(projects.core.screenshotTesting)
+//    testDemoImplementation(projects.core.testing)
 
-    androidTestImplementation(projects.core.testing)
-    androidTestImplementation(projects.core.dataTest)
-    androidTestImplementation(projects.core.datastoreTest)
+//    androidTestImplementation(projects.core.testing)
+//    androidTestImplementation(projects.core.dataTest)
+//    androidTestImplementation(projects.core.datastoreTest)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.compose.ui.test)
     androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.kotlin.test)
 
-    baselineProfile(projects.benchmarks)
+//    baselineProfile(projects.benchmarks)
 }
 
 baselineProfile {

@@ -28,8 +28,8 @@ dependencies {
     implementation(projects.feature.bookmarks.api)
     implementation(projects.feature.topic.api)
 
-    testImplementation(projects.core.testing)
+//    testImplementation(projects.core.testing)
 
     androidTestImplementation(libs.bundles.androidx.compose.ui.test)
-    androidTestImplementation(projects.core.testing)
+//    androidTestImplementation(projects.core.testing)
 }
