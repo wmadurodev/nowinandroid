@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.nowinandroid.core.data.repository
 
+import android.util.Log
 import com.google.samples.apps.nowinandroid.core.data.Synchronizer
 import com.google.samples.apps.nowinandroid.core.data.changeListSync
 import com.google.samples.apps.nowinandroid.core.data.model.asEntity
@@ -50,7 +51,12 @@ internal class OfflineFirstTopicsRepository @Inject constructor(
         synchronizer.changeListSync(
             versionReader = ChangeListVersions::topicVersion,
             changeListFetcher = { currentVersion ->
-                network.getTopicChangeList(after = currentVersion)
+                val getTopicChangeList = network.getTopicChangeList(after = currentVersion)
+                Log.d(
+                    "lixo",
+                    "maduro ->  TOPICS getTopicChangeList : $getTopicChangeList",
+                )
+                getTopicChangeList
             },
             versionUpdater = { latestVersion ->
                 copy(topicVersion = latestVersion)
@@ -58,6 +64,10 @@ internal class OfflineFirstTopicsRepository @Inject constructor(
             modelDeleter = topicDao::deleteTopics,
             modelUpdater = { changedIds ->
                 val networkTopics = network.getTopics(ids = changedIds)
+                Log.d(
+                    "lixo",
+                    "maduro ->  TOPICS networkTopics : $networkTopics",
+                )
                 topicDao.upsertTopics(
                     entities = networkTopics.map(NetworkTopic::asEntity),
                 )

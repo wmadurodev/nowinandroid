@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.nowinandroid.core.data.repository
 
+import android.util.Log
 import com.google.samples.apps.nowinandroid.core.data.Synchronizer
 import com.google.samples.apps.nowinandroid.core.data.changeListSync
 import com.google.samples.apps.nowinandroid.core.data.model.asEntity
@@ -69,7 +70,17 @@ internal class OfflineFirstNewsRepository @Inject constructor(
             versionReader = ChangeListVersions::newsResourceVersion,
             changeListFetcher = { currentVersion ->
                 isFirstSync = currentVersion <= 0
-                network.getNewsResourceChangeList(after = currentVersion)
+
+                val getNewsResourceChangeList =
+                    network.getNewsResourceChangeList(after = currentVersion)
+
+                Log.d(
+                    "OfflineFirstNewsRepository",
+                    "maduro -> NEWS getNewsResourceChangeList : $getNewsResourceChangeList",
+                )
+
+
+                getNewsResourceChangeList
             },
             versionUpdater = { latestVersion ->
                 copy(newsResourceVersion = latestVersion)
