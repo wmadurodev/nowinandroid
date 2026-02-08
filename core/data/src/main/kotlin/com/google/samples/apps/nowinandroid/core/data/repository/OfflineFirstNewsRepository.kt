@@ -32,7 +32,7 @@ import com.google.samples.apps.nowinandroid.core.datastore.NiaPreferencesDataSou
 import com.google.samples.apps.nowinandroid.core.model.data.NewsResource
 import com.google.samples.apps.nowinandroid.core.network.NiaNetworkDataSource
 import com.google.samples.apps.nowinandroid.core.network.model.NetworkNewsResource
-import com.google.samples.apps.nowinandroid.core.notifications.Notifier
+//import com.google.samples.apps.nowinandroid.core.notifications.Notifier
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -51,7 +51,7 @@ internal class OfflineFirstNewsRepository @Inject constructor(
     private val newsResourceDao: NewsResourceDao,
     private val topicDao: TopicDao,
     private val network: NiaNetworkDataSource,
-    private val notifier: Notifier,
+//    private val notifier: Notifier,
 ) : NewsRepository {
 
     override fun getNewsResources(
@@ -146,9 +146,9 @@ internal class OfflineFirstNewsRepository @Inject constructor(
                         .map(PopulatedNewsResource::asExternalModel)
 
                     if (addedNewsResources.isNotEmpty()) {
-                        notifier.postNewsNotifications(
-                            newsResources = addedNewsResources,
-                        )
+//                        notifier.postNewsNotifications(
+//                            newsResources = addedNewsResources,
+//                        )
                     }
                 }
             },

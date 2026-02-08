@@ -34,7 +34,7 @@ import com.google.samples.apps.nowinandroid.core.data.repository.TopicsRepositor
 import com.google.samples.apps.nowinandroid.core.datastore.ChangeListVersions
 import com.google.samples.apps.nowinandroid.core.datastore.NiaPreferencesDataSource
 import com.google.samples.apps.nowinandroid.sync.initializers.SyncConstraints
-import com.google.samples.apps.nowinandroid.sync.initializers.syncForegroundInfo
+//import com.google.samples.apps.nowinandroid.sync.initializers.syncForegroundInfo
 import com.google.samples.apps.nowinandroid.sync.status.SyncSubscriber
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -60,8 +60,8 @@ internal class SyncWorker @AssistedInject constructor(
     private val syncSubscriber: SyncSubscriber,
 ) : CoroutineWorker(appContext, workerParams), Synchronizer {
 
-    override suspend fun getForegroundInfo(): ForegroundInfo =
-        appContext.syncForegroundInfo()
+//    override suspend fun getForegroundInfo(): ForegroundInfo =
+//        appContext.syncForegroundInfo()
 
     override suspend fun doWork(): Result = withContext(ioDispatcher) {
         traceAsync("Sync", 0) {

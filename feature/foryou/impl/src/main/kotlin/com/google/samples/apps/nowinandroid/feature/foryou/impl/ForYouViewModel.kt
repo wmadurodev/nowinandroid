@@ -27,7 +27,7 @@ import com.google.samples.apps.nowinandroid.core.data.repository.UserDataReposit
 import com.google.samples.apps.nowinandroid.core.data.repository.UserNewsResourceRepository
 import com.google.samples.apps.nowinandroid.core.data.util.SyncManager
 import com.google.samples.apps.nowinandroid.core.domain.GetFollowableTopicsUseCase
-import com.google.samples.apps.nowinandroid.core.notifications.DEEP_LINK_NEWS_RESOURCE_ID_KEY
+//import com.google.samples.apps.nowinandroid.core.notifications.DEEP_LINK_NEWS_RESOURCE_ID_KEY
 import com.google.samples.apps.nowinandroid.core.ui.NewsFeedUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -54,27 +54,27 @@ class ForYouViewModel @Inject constructor(
     private val shouldShowOnboarding: Flow<Boolean> =
         userDataRepository.userData.map { !it.shouldHideOnboarding }
 
-    val deepLinkedNewsResource = savedStateHandle.getStateFlow<String?>(
-        key = DEEP_LINK_NEWS_RESOURCE_ID_KEY,
-        null,
-    )
-        .flatMapLatest { newsResourceId ->
-            if (newsResourceId == null) {
-                flowOf(emptyList())
-            } else {
-                userNewsResourceRepository.observeAll(
-                    NewsResourceQuery(
-                        filterNewsIds = setOf(newsResourceId),
-                    ),
-                )
-            }
-        }
-        .map { it.firstOrNull() }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = null,
-        )
+//    val deepLinkedNewsResource = savedStateHandle.getStateFlow<String?>(
+//        key = DEEP_LINK_NEWS_RESOURCE_ID_KEY,
+//        null,
+//    )
+//        .flatMapLatest { newsResourceId ->
+//            if (newsResourceId == null) {
+//                flowOf(emptyList())
+//            } else {
+//                userNewsResourceRepository.observeAll(
+//                    NewsResourceQuery(
+//                        filterNewsIds = setOf(newsResourceId),
+//                    ),
+//                )
+//            }
+//        }
+//        .map { it.firstOrNull() }
+//        .stateIn(
+//            scope = viewModelScope,
+//            started = SharingStarted.WhileSubscribed(5_000),
+//            initialValue = null,
+//        )
 
     val isSyncing = syncManager.isSyncing
         .stateIn(
@@ -127,18 +127,18 @@ class ForYouViewModel @Inject constructor(
         }
     }
 
-    fun onDeepLinkOpened(newsResourceId: String) {
-        if (newsResourceId == deepLinkedNewsResource.value?.id) {
-            savedStateHandle[DEEP_LINK_NEWS_RESOURCE_ID_KEY] = null
-        }
-        analyticsHelper.logNewsDeepLinkOpen(newsResourceId = newsResourceId)
-        viewModelScope.launch {
-            userDataRepository.setNewsResourceViewed(
-                newsResourceId = newsResourceId,
-                viewed = true,
-            )
-        }
-    }
+//    fun onDeepLinkOpened(newsResourceId: String) {
+//        if (newsResourceId == deepLinkedNewsResource.value?.id) {
+//            savedStateHandle[DEEP_LINK_NEWS_RESOURCE_ID_KEY] = null
+//        }
+//        analyticsHelper.logNewsDeepLinkOpen(newsResourceId = newsResourceId)
+//        viewModelScope.launch {
+//            userDataRepository.setNewsResourceViewed(
+//                newsResourceId = newsResourceId,
+//                viewed = true,
+//            )
+//        }
+//    }
 
     fun dismissOnboarding() {
         viewModelScope.launch {
@@ -147,15 +147,15 @@ class ForYouViewModel @Inject constructor(
     }
 }
 
-private fun AnalyticsHelper.logNewsDeepLinkOpen(newsResourceId: String) =
-    logEvent(
-        AnalyticsEvent(
-            type = "news_deep_link_opened",
-            extras = listOf(
-                Param(
-                    key = DEEP_LINK_NEWS_RESOURCE_ID_KEY,
-                    value = newsResourceId,
-                ),
-            ),
-        ),
-    )
+//private fun AnalyticsHelper.logNewsDeepLinkOpen(newsResourceId: String) =
+//    logEvent(
+//        AnalyticsEvent(
+//            type = "news_deep_link_opened",
+//            extras = listOf(
+//                Param(
+//                    key = DEEP_LINK_NEWS_RESOURCE_ID_KEY,
+//                    value = newsResourceId,
+//                ),
+//            ),
+//        ),
+//    )

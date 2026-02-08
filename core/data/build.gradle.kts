@@ -32,7 +32,7 @@ dependencies {
     api(projects.core.network)
 
     implementation(projects.core.analytics)
-    implementation(projects.core.notifications)
+//    implementation(projects.core.notifications)
 
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kotlinx.serialization.json)
