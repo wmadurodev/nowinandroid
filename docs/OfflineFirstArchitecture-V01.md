@@ -38,12 +38,52 @@ This method demonstrates how a repository synchronizes its data:
 
 This `changeListSync` mechanism minimizes data transfer and ensures the local database is consistently up-to-date.
 
+```kotlin
+override suspend fun syncWith(synchronizer: Synchronizer): Boolean =
+    synchronizer.changeListSync(
+        versionReader = ChangeListVersions::topicVersion,
+        changeListFetcher = { currentVersion ->
+            network.getTopicChangeList(after = currentVersion)
+        },
+        versionUpdater = { latestVersion ->
+            copy(topicVersion = latestVersion)
+        },
+        modelDeleter = topicDao::deleteTopics,
+        modelUpdater = { changedIds ->
+            val networkTopics = network.getTopics(ids = changedIds)
+            topicDao.upsertTopics(
+                entities = networkTopics.map(NetworkTopic::asEntity),
+            )
+        },
+    )
+```
+
 ### 2. Domain Layer
 
 The Domain Layer contains use cases that encapsulate business logic. In an offline-first architecture, these use cases typically combine and transform data streams provided by the repositories in the Data Layer. They operate solely on the data exposed by repositories, abstracting away the underlying data sources and the complexities of synchronization.
 
 **Example: `GetUserNewsResourcesUseCase`**
+*(Implemented by `CompositeUserNewsResourceRepository`)*
 This use case combines `NewsResource` streams from `NewsRepository` with `UserData` streams from `UserDataRepository` to create a stream of `UserNewsResource`s, which include the user's bookmarking status. This ensures that the UI always displays the most current data available locally, which is then updated reactively as synchronization occurs.
+
+```kotlin
+class CompositeUserNewsResourceRepository @Inject constructor(
+    val newsRepository: NewsRepository,
+    val userDataRepository: UserDataRepository,
+) : UserNewsResourceRepository {
+
+    /**
+     * Returns available news resources (joined with user data) matching the given query.
+     */
+    override fun observeAll(
+        query: NewsResourceQuery,
+    ): Flow<List<UserNewsResource>> =
+        newsRepository.getNewsResources(query)
+            .combine(userDataRepository.userData) { newsResources, userData ->
+                newsResources.mapToUserNewsResources(userData)
+            }
+}
+```
 
 ### 3. UI Layer
 
@@ -59,6 +99,21 @@ The UI Layer comprises Jetpack Compose UI elements and Android ViewModels. ViewM
 `WorkManager` is crucial for scheduling and executing background synchronization tasks, especially for long-running operations or when specific constraints (like network availability) need to be met.
 
 *   **Initialization:** On app startup, `Sync.initialize()` enqueues a `SyncWorker` using `WorkManager.enqueueUniqueWork` to ensure only one sync task runs at a time.
+
+```kotlin
+object Sync {
+    fun initialize(context: Context) {
+        WorkManager.getInstance(context).apply {
+            // Run sync on app startup and ensure only one sync worker runs at any time
+            enqueueUniqueWork(
+                SYNC_WORK_NAME,
+                ExistingWorkPolicy.KEEP,
+                SyncWorker.startUpSyncWork(),
+            )
+        }
+    }
+}
+```
 *   **`SyncWorker`:** This `CoroutineWorker` orchestrates the synchronization of all necessary repositories (e.g., `topicRepository.sync()`, `newsRepository.sync()`). It uses `async` and `awaitAll` for parallel synchronization.
 *   **`DelegatingWorker`:** To facilitate Hilt dependency injection into `SyncWorker` without complex `WorkManager` configurations in the main app module, a `DelegatingWorker` acts as a proxy. It receives the work request, creates an instance of the Hilt-injected `SyncWorker`, and delegates the `doWork()` call.
 
